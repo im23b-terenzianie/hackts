@@ -1,77 +1,95 @@
 "use client";
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HomePage() {
   const [playerName, setPlayerName] = useState('');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">WordBattle</h1>
-          <p className="text-gray-600">Das ultimative 1v1 Vokabel-Duell</p>
-        </div>
+    <div className="h-screen bg-yellow-50 relative overflow-hidden">
+      {/* Duolingo-style background pattern */}
+      <div className="absolute inset-0">
+        <div className="absolute top-10 left-10 w-20 h-20 bg-yellow-300 rounded-full opacity-30 animate-bounce"></div>
+        <div className="absolute top-32 right-16 w-16 h-16 bg-orange-300 rounded-full opacity-25 animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-24 h-24 bg-amber-300 rounded-full opacity-20 animate-ping"></div>
+        <div className="absolute bottom-32 right-10 w-12 h-12 bg-yellow-400 rounded-full opacity-35 animate-bounce"></div>
+      </div>
 
-        <div className="space-y-4 mb-8">
-          <div>
-            <label htmlFor="playerName" className="block text-sm font-medium text-gray-700 mb-2">
-              Dein Name
-            </label>
-            <input
-              type="text"
-              id="playerName"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              placeholder="Gib deinen Namen ein..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              maxLength={20}
-            />
+      <div className="relative z-10 flex items-center justify-center h-screen p-4">
+        <div className="max-w-md w-full">
+          {/* Header with Duolingo-style branding */}
+          <div className="text-center mb-12">
+            <div className="mb-6">
+              {/* Logo */}
+              <div className="w-24 h-24 mx-auto mb-4 bg-white rounded-full flex items-center justify-center shadow-lg p-2">
+                <Image
+                  src="/logo/duellingo.png"
+                  alt="Duellingo Logo"
+                  width={80}
+                  height={80}
+                  className="rounded-full"
+                />
+              </div>
+            </div>
+            <h1 className="text-5xl font-black text-yellow-600 mb-4">
+              Duellingo
+            </h1>
+            <p className="text-xl text-gray-700 font-medium">Das ultimative Vokabel-Duell!</p>
           </div>
-        </div>
 
-        <div className="space-y-4">
-          <Link 
-            href={`/host?name=${encodeURIComponent(playerName)}`}
-            className={`block w-full py-4 px-6 rounded-lg text-center font-semibold transition-all ${
-              playerName.trim() 
-                ? 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105' 
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-            onClick={(e) => !playerName.trim() && e.preventDefault()}
-          >
-            🎮 Lobby erstellen
-          </Link>
-          
-          <Link 
-            href={`/join?name=${encodeURIComponent(playerName)}`}
-            className={`block w-full py-4 px-6 rounded-lg text-center font-semibold transition-all ${
-              playerName.trim() 
-                ? 'bg-green-600 text-white hover:bg-green-700 transform hover:scale-105' 
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-            onClick={(e) => !playerName.trim() && e.preventDefault()}
-          >
-            🔗 Lobby beitreten
-          </Link>
-        </div>
+          {/* Main card - Duolingo style */}
+          <div className="bg-white rounded-3xl shadow-2xl p-8 border-4 border-yellow-200">
+            <div className="space-y-6">
+              <div>
+                <label htmlFor="playerName" className="block text-lg font-bold text-gray-800 mb-3">
+                  Dein Name
+                </label>
+                <input
+                  id="playerName"
+                  type="text"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  placeholder="Gib deinen Namen ein..."
+                  className="w-full px-6 py-4 bg-gray-50 border-2 border-yellow-300 rounded-2xl focus:ring-4 focus:ring-yellow-400 focus:border-yellow-500 text-gray-800 placeholder-gray-500 font-medium text-lg transition-all duration-300"
+                  maxLength={20}
+                />
+              </div>
 
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">So funktioniert's:</h3>
-          <ul className="space-y-2 text-sm text-gray-600">
-            <li className="flex items-center">
-              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold mr-3">1</span>
-              Erstelle eine Lobby oder trete einer bei
-            </li>
-            <li className="flex items-center">
-              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold mr-3">2</span>
-              Lade deine Vokabeln hoch oder erstelle sie manuell
-            </li>
-            <li className="flex items-center">
-              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold mr-3">3</span>
-              Starte das Spiel und kämpfe um den Sieg!
-            </li>
-          </ul>
+              <div className="grid grid-cols-1 gap-4">
+                <Link
+                  href={`/host?name=${encodeURIComponent(playerName)}`}
+                  className={`py-4 px-6 rounded-2xl font-bold text-lg text-center transition-all duration-300 transform hover:scale-105 ${
+                    playerName.trim()
+                      ? 'bg-yellow-400 text-white shadow-lg hover:shadow-xl hover:bg-yellow-500'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                  onClick={(e) => !playerName.trim() && e.preventDefault()}
+                >
+                  Lobby erstellen
+                </Link>
+                
+                <Link
+                  href={`/join?name=${encodeURIComponent(playerName)}`}
+                  className={`py-4 px-6 rounded-2xl font-bold text-lg text-center transition-all duration-300 transform hover:scale-105 ${
+                    playerName.trim()
+                      ? 'bg-orange-400 text-white shadow-lg hover:shadow-xl hover:bg-orange-500'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                  onClick={(e) => !playerName.trim() && e.preventDefault()}
+                >
+                  Lobby beitreten
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center mt-8">
+            <p className="text-gray-600 text-sm">
+              Erstelle deine eigene Lobby oder trete einer bestehenden bei!
+            </p>
+          </div>
         </div>
       </div>
     </div>

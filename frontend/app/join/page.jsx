@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function JoinPage() {
   const searchParams = useSearchParams();
@@ -88,16 +89,27 @@ export default function JoinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="h-screen bg-yellow-50 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Lobby beitreten</h1>
-          <p className="text-gray-600">Spieler: {playerName}</p>
+          <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg mx-auto mb-4 p-2">
+            <Image
+              src="/logo/duellingo.png"
+              alt="Duellingo Logo"
+              width={64}
+              height={64}
+              className="rounded-full"
+            />
+          </div>
+          <h1 className="text-4xl font-black text-yellow-600 mb-2">
+            Lobby beitreten
+          </h1>
+          <p className="text-xl text-gray-700 font-medium">Spieler: {playerName}</p>
         </div>
 
         <div className="space-y-6">
           <div>
-            <label htmlFor="lobbyCode" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="lobbyCode" className="block text-lg font-bold text-gray-800 mb-3">
               Lobby-Code
             </label>
             <input
@@ -106,28 +118,28 @@ export default function JoinPage() {
               value={lobbyCode}
               onChange={(e) => setLobbyCode(e.target.value.toUpperCase())}
               placeholder="z.B. ABC123"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-lg font-mono"
+              className="w-full px-6 py-4 bg-gray-50 border-2 border-yellow-300 rounded-2xl focus:ring-4 focus:ring-yellow-400 focus:border-yellow-500 text-gray-800 placeholder-gray-500 font-mono text-2xl text-center transition-all duration-300"
               maxLength={6}
               autoFocus
             />
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-600 mt-2 text-center">
               Gib den 6-stelligen Code ein, den dir der Host gegeben hat
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
-              {error}
+            <div className="bg-red-100 border-2 border-red-300 text-red-700 px-4 py-3 rounded-2xl font-medium">
+              ⚠️ {error}
             </div>
           )}
 
           <button
             onClick={joinLobby}
             disabled={isJoining || !lobbyCode.trim()}
-            className={`w-full py-4 px-6 rounded-lg font-semibold transition-all ${
+            className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${
               isJoining || !lobbyCode.trim()
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-700 transform hover:scale-105'
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-orange-400 text-white shadow-lg hover:shadow-xl hover:bg-orange-500'
             }`}
           >
             {isJoining ? 'Trete bei...' : 'Lobby beitreten'}
@@ -136,7 +148,7 @@ export default function JoinPage() {
           <div className="text-center">
             <Link 
               href="/"
-              className="text-blue-600 hover:text-blue-800 transition-colors"
+              className="text-gray-600 hover:text-yellow-600 transition-colors font-medium"
             >
               ← Zurück zur Startseite
             </Link>

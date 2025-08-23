@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function LobbyPage() {
   const params = useParams();
@@ -20,6 +21,8 @@ export default function LobbyPage() {
   const [isHost, setIsHost] = useState(false);
   const [gameResults, setGameResults] = useState(null);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
   const [connectionStatus, setConnectionStatus] = useState('connecting');
   const [hasJoined, setHasJoined] = useState(false);
   const [joinAttempted, setJoinAttempted] = useState(false);
@@ -152,14 +155,22 @@ export default function LobbyPage() {
         
       case 'correct':
         setScore(data.score);
-        setError('Richtig! 🎉');
-        setTimeout(() => setError(''), 1000);
+        setMessage('Richtig! 🎉');
+        setMessageType('success');
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 1000);
         break;
         
       case 'incorrect':
         setScore(data.score);
-        setError(`Falsch! Die richtige Antwort war: ${data.correctAnswer}`);
-        setTimeout(() => setError(''), 2000);
+        setMessage(`Falsch! Die richtige Antwort war: ${data.correctAnswer}`);
+        setMessageType('error');
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 2000);
         break;
         
       case 'gameOver':
@@ -229,20 +240,36 @@ export default function LobbyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-screen bg-yellow-50 p-4 overflow-hidden">
+      <div className="max-w-4xl mx-auto h-full">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+        <div className="bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8 mb-8">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800">Lobby: {lobbyCode}</h1>
-              <p className="text-gray-600">Spieler: {playerName}</p>
+            <div className="flex items-center">
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mr-4 p-2">
+                <Image
+                  src="/logo/duellingo.png"
+                  alt="Duellingo Logo"
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                />
+              </div>
+              <div>
+                <h1 className="text-4xl font-black text-yellow-600 mb-2">
+                  Lobby: {lobbyCode}
+                </h1>
+                <p className="text-xl text-gray-700 font-medium">Spieler: {playerName}</p>
+              </div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-gray-500">Status</div>
-              <div className={`font-semibold ${
+              <div className="text-sm text-gray-600">Status</div>
+              <div className={`flex items-center justify-end font-bold text-lg ${
                 connectionStatus === 'connected' ? 'text-green-600' : 'text-red-600'
               }`}>
+                <div className={`w-3 h-3 rounded-full mr-2 ${
+                  connectionStatus === 'connected' ? 'bg-green-500' : 'bg-red-500'
+                }`}></div>
                 {connectionStatus === 'connected' ? 'Verbunden' : 'Getrennt'}
               </div>
             </div>
@@ -250,130 +277,154 @@ export default function LobbyPage() {
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg mb-6">
-            {error}
+          <div className="bg-red-100 border-2 border-red-300 text-red-700 px-6 py-4 rounded-2xl mb-8 font-medium">
+            ⚠️ {error}
           </div>
         )}
 
-        {gameState === 'waiting' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Players List */}
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Spieler ({players.length}/2)</h2>
-              <div className="space-y-3">
-                {players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center">
-                      <span className="w-3 h-3 bg-green-500 rounded-full mr-3"></span>
-                      <span className="font-medium">{player.name}</span>
-                      {player.isHost && (
-                        <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                          Host
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {players.length < 2 && (
-                  <div className="text-center py-8 text-gray-500">
-                    Warte auf zweiten Spieler...
-                  </div>
-                )}
-              </div>
-            </div>
 
-            {/* Host Controls */}
-            {isHost && (
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Host-Steuerung</h2>
-                <button
-                  onClick={startGame}
-                  disabled={players.length < 2}
-                  className={`w-full py-4 px-6 rounded-lg font-semibold transition-all ${
-                    players.length < 2
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-green-600 text-white hover:bg-green-700 transform hover:scale-105'
-                  }`}
-                >
-                  {players.length < 2 ? 'Warte auf Spieler...' : 'Spiel starten'}
-                </button>
-                <p className="text-sm text-gray-500 mt-2">
-                  Mindestens 2 Spieler benötigt
-                </p>
-              </div>
-            )}
 
-            {!isHost && (
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Warten auf Host</h2>
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Der Host startet das Spiel...</p>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+                 {gameState === 'waiting' && (
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full overflow-y-auto">
+             {/* Players List */}
+             <div className="bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8">
+               <h2 className="text-2xl font-bold text-gray-800 mb-6">Spieler ({players.length}/2)</h2>
+               <div className="space-y-4">
+                 {players.map((player) => (
+                   <div key={player.id} className="flex items-center justify-between p-4 bg-yellow-50 border-2 border-yellow-200 rounded-2xl">
+                     <div className="flex items-center">
+                       <span className="w-4 h-4 bg-green-500 rounded-full mr-4"></span>
+                       <span className="font-bold text-gray-800">{player.name}</span>
+                       {player.isHost && (
+                         <span className="ml-3 px-3 py-1 bg-yellow-400 text-white text-sm rounded-full font-bold">
+                           Host
+                         </span>
+                       )}
+                     </div>
+                   </div>
+                 ))}
+                 {players.length < 2 && (
+                   <div className="text-center py-12">
+                     <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                       <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-yellow-400"></div>
+                     </div>
+                     <p className="text-gray-600 font-medium">Warte auf zweiten Spieler...</p>
+                   </div>
+                 )}
+               </div>
+             </div>
+
+             {/* Host Controls */}
+             {isHost && (
+               <div className="bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8">
+                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Host-Steuerung</h2>
+                 <button
+                   onClick={startGame}
+                   disabled={players.length < 2}
+                   className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
+                     players.length < 2
+                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                       : 'bg-yellow-400 text-white hover:bg-yellow-500 transform hover:scale-105 shadow-lg hover:shadow-xl'
+                   }`}
+                 >
+                   {players.length < 2 ? 'Warte auf Spieler...' : 'Spiel starten'}
+                 </button>
+                 <p className="text-sm text-gray-600 mt-3 text-center">
+                   Mindestens 2 Spieler benötigt
+                 </p>
+               </div>
+             )}
+
+             {!isHost && (
+               <div className="bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8">
+                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Warten auf Host</h2>
+                 <div className="text-center py-12">
+                   <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                     <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-yellow-400"></div>
+                   </div>
+                   <p className="text-gray-600 font-medium">Der Host startet das Spiel...</p>
+                 </div>
+               </div>
+             )}
+           </div>
+         )}
 
         {gameState === 'playing' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full overflow-y-auto">
             {/* Game Interface */}
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold text-blue-600 mb-2">
+            <div className="bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8">
+              <div className="text-center mb-8">
+                <div className="text-5xl font-bold text-orange-600 mb-2">
                   {formatTime(timeLeft)}
                 </div>
-                <div className="text-lg text-gray-600">Zeit verbleibend</div>
+                <div className="text-lg text-gray-600 font-medium">Zeit verbleibend</div>
               </div>
 
               {currentWord && (
                 <div className="text-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">Übersetze:</h2>
-                  <div className="text-4xl font-bold text-blue-600 mb-6">
-                    {currentWord.question}
-                  </div>
-                  
-                  <form onSubmit={submitAnswer} className="space-y-4">
-                    <input
-                      ref={answerInputRef}
-                      type="text"
-                      value={answer}
-                      onChange={(e) => setAnswer(e.target.value)}
-                      placeholder="Deine Antwort..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-lg"
-                      autoFocus
-                    />
-                    <button
-                      type="submit"
-                      disabled={!answer.trim()}
-                      className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
-                        answer.trim()
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      }`}
-                    >
-                      Antwort senden
-                    </button>
-                  </form>
+                  {message ? (
+                    /* Message Display - ersetzt die gesamte Guessing-Box */
+                    <div className={`p-8 rounded-2xl font-medium text-2xl ${
+                      messageType === 'success' 
+                        ? 'bg-green-100 border-4 border-green-300 text-green-700' 
+                        : 'bg-red-100 border-4 border-red-300 text-red-700'
+                    }`}>
+                      <div className="text-4xl mb-4">
+                        {messageType === 'success' ? '✅' : '❌'}
+                      </div>
+                      {message}
+                    </div>
+                  ) : (
+                    /* Normal Guessing Interface */
+                    <>
+                      <h2 className="text-2xl font-bold text-gray-800 mb-6">Übersetze:</h2>
+                      <div className="text-4xl font-bold text-yellow-600 mb-8 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-2xl">
+                        {currentWord.question}
+                      </div>
+                      
+                      <form onSubmit={submitAnswer} className="space-y-4">
+                        <input
+                          ref={answerInputRef}
+                          type="text"
+                          value={answer}
+                          onChange={(e) => setAnswer(e.target.value)}
+                          placeholder="Deine Antwort..."
+                          className="w-full px-6 py-4 border-2 border-yellow-300 rounded-2xl focus:ring-4 focus:ring-yellow-400 focus:border-yellow-500 text-center text-lg font-medium text-black"
+                          autoFocus
+                        />
+                        <button
+                          type="submit"
+                          disabled={!answer.trim()}
+                          className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
+                            answer.trim()
+                              ? 'bg-orange-400 text-white hover:bg-orange-500 shadow-lg hover:shadow-xl'
+                              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          }`}
+                        >
+                          Antwort senden
+                        </button>
+                      </form>
+                    </>
+                  )}
                 </div>
               )}
             </div>
 
             {/* Score and Players */}
-            <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Punktestand</h2>
+            <div className="bg-white rounded-3xl shadow-2xl border-4 border-yellow-200 p-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">Punktestand</h2>
               <div className="space-y-4">
                 {players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={player.id} className="flex items-center justify-between p-4 bg-yellow-50 border-2 border-yellow-200 rounded-2xl">
                     <div className="flex items-center">
-                      <span className="font-medium">{player.name}</span>
+                      <span className="font-bold text-gray-800">{player.name}</span>
                       {player.name === playerName && (
-                        <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                        <span className="ml-3 px-3 py-1 bg-yellow-400 text-white text-sm rounded-full font-bold">
                           Du
                         </span>
                       )}
                     </div>
-                    <div className="text-xl font-bold text-blue-600">
+                    <div className="text-xl font-bold text-orange-600">
                       {player.name === playerName ? score : '?'}
                     </div>
                   </div>
@@ -397,17 +448,14 @@ export default function LobbyPage() {
                       : 'bg-gray-50'
                   }`}>
                     <div className="flex items-center">
-                      {gameResults.winners.includes(result.name) && (
-                        <span className="text-2xl mr-3">🏆</span>
-                      )}
-                      <span className="font-medium">{result.name}</span>
+                      <span className="font-medium text-gray-800">{result.name}</span>
                       {result.name === playerName && (
                         <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
                           Du
                         </span>
                       )}
                     </div>
-                    <div className="text-xl font-bold text-blue-600">
+                    <div className="text-xl font-bold text-gray-800">
                       {result.score} Punkte
                     </div>
                   </div>
