@@ -2,23 +2,21 @@
 
 Eine interaktive Web-App für Vokabel-Duelle zwischen zwei Spielern. Perfekt für den Schulalltag, um Vokabeln spielerisch zu lernen und zu üben.
 
-## 🎯 Problem & Lösung
+## Problem & Lösung
 
 **Problem:** Im Schulalltag ist es oft schwierig, Vokabeln effektiv zu lernen. Herkömmliche Methoden sind langweilig und wenig motivierend.
 
-**Lösung:** WordBattle bietet ein spannendes 1v1-Duell-System, bei dem Spieler gegeneinander antreten und Vokabeln in Echtzeit übersetzen müssen. Die App unterstützt sowohl manuelle Eingabe als auch Excel-Upload für einfache Verwaltung von Vokabellisten.
+**Lösung:** WordBattle bietet ein spannendes 1v1-Duell-System, bei dem Spieler gegeneinander antreten und Vokabeln in Echtzeit übersetzen müssen. Die App unterstützt Excel-Upload für einfache Verwaltung von Vokabellisten.
 
-## ✨ Features
+## Features
 
 - **1v1 Echtzeit-Duelle**: Zwei Spieler treten gegeneinander an
 - **Excel-Import**: Einfaches Hochladen von Vokabellisten aus Excel-Dateien
-- **Manuelle Eingabe**: Wörter können auch direkt in der App hinzugefügt werden
 - **Verschiedene Zeitmodi**: Schnell (1 Min), Normal (3 Min), Lang (5 Min)
 - **Echtzeit-Punktestand**: Live-Verfolgung der Punkte beider Spieler
-- **Responsive Design**: Funktioniert auf Desktop und Mobile
 - **Lobby-System**: Einfaches Erstellen und Beitreten von Spielen via Code
 
-## 🛠️ Technologie-Stack
+## Technologie-Stack
 
 ### Backend
 - **Node.js** mit **Express.js**
@@ -30,7 +28,7 @@ Eine interaktive Web-App für Vokabel-Duelle zwischen zwei Spielern. Perfekt fü
 - **Tailwind CSS** für modernes Design
 - **xlsx** für Excel-Datei-Verarbeitung
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Voraussetzungen
 - Node.js (Version 16 oder höher)
@@ -87,7 +85,7 @@ Das Frontend ist dann unter `http://localhost:3001` verfügbar
 - Übersetze das angezeigte Wort so schnell wie möglich
 - Der Spieler mit den meisten richtigen Antworten gewinnt
 
-## 📊 Excel-Format
+## Excel-Format
 
 Die App unterstützt Excel-Dateien (.xlsx) mit folgendem Format:
 - **Spalte A**: Frage (z.B. englische Vokabel)
@@ -100,7 +98,7 @@ Die App unterstützt Excel-Dateien (.xlsx) mit folgendem Format:
 | Hello     |   |   |   |   | Hallo       |
 | Goodbye   |   |   |   |   | Auf Wiedersehen |
 
-## 🔧 Entwicklung
+## Entwicklung
 
 ### Projektstruktur
 ```
@@ -138,11 +136,8 @@ hackts/
 - `gameOver`: Spiel beendet
 
 
-## 👥 Contributors
+## Contributors
+**[im23b-schmids3](https://github.com/im23b-schmids3)** </br>
+**[im23b-terenzianie](https://github.com/im23b-terenzianie)** </br>
+**[im23b-busere](https://github.com/im23b-busere)** </br>
 
-- Erik, Enzo & Sandro
-
-
-## 📝 Lizenz
-
-Dieses Projekt wurde für den Hackathon "Von Nervig zu nützlich" entwickelt.
