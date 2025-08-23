@@ -64,7 +64,7 @@ npm run dev
 
 Das Frontend ist dann unter `http://localhost:3001` verfügbar
 
-## 🎮 Wie man spielt
+## Wie man spielt
 
 ### 1. Spiel starten
 - Öffne die App im Browser
@@ -93,10 +93,10 @@ Die App unterstützt Excel-Dateien (.xlsx) mit folgendem Format:
 - **Ab Zeile 6**: Erste Vokabel (Zeilen 1-5 werden ignoriert)
 
 ### Beispiel:
-| A (Frage) | B | C | D | E | F (Antwort) |
-|-----------|---|---|---|---|-------------|
-| Hello     |   |   |   |   | Hallo       |
-| Goodbye   |   |   |   |   | Auf Wiedersehen |
+| A (Frage) | B | C | D | E (Antwort)     | 
+|-----------|---|---|---|-----------------|
+| Hello     |   |   |   | Hallo           | 
+| Goodbye   |   |   |   | Auf Wiedersehen |
 
 ## Entwicklung
 
