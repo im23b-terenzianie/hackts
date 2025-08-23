@@ -1,0 +1,15 @@
+# Node
+node_modules/
+.env
+.DS_Store
+.next/
+*.log
+# Excel uploads
+*.xlsx
+*.xls
+# VSCode
+.vscode/
+# Build
+out/
+dist/
+build/
