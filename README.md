@@ -137,40 +137,12 @@ hackts/
 - `correct/incorrect`: Antwort-Feedback
 - `gameOver`: Spiel beendet
 
-## 🎨 Design-Features
-
-- **Modernes UI**: Clean Design mit Tailwind CSS
-- **Responsive**: Funktioniert auf allen Geräten
-- **Intuitive Navigation**: Klare Benutzerführung
-- **Echtzeit-Feedback**: Sofortige Rückmeldung bei Aktionen
-- **Visuelle Effekte**: Hover-Effekte und Animationen
-
-## 🔮 Zukünftige Erweiterungen
-
-- **Mehrspieler-Modi**: 3-4 Spieler gleichzeitig
-- **Verschiedene Spielmodi**: Multiple Choice, Bilder-Raten
-- **Statistiken**: Persönliche Lernfortschritte
-- **Offline-Modus**: Lokale Spiele ohne Internet
-- **Sprachausgabe**: Audio-Unterstützung für Aussprache
-- **Leaderboards**: Globale Ranglisten
 
 ## 👥 Contributors
 
-- **Entwicklung**: [Dein Name]
-- **Design**: [Dein Name]
-- **Konzept**: [Dein Name]
+- Erik, Enzo & Sandro
+
 
 ## 📝 Lizenz
 
 Dieses Projekt wurde für den Hackathon "Von Nervig zu nützlich" entwickelt.
-
-## 🤝 Support
-
-Bei Fragen oder Problemen:
-1. Überprüfe, ob alle Abhängigkeiten installiert sind
-2. Stelle sicher, dass Backend und Frontend laufen
-3. Überprüfe die Browser-Konsole auf Fehlermeldungen
-
----
-
-**Viel Spaß beim Vokabel-Lernen! 🎓**
