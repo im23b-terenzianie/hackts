@@ -1,12 +1,11 @@
 import express from 'express';
-import { WebSocket } from 'ws';
+import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
 import { nanoid } from 'nanoid';
-import { arrayBuffer } from 'stream/consumers';
 
 const app = express();
 const server = createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocketServer({ server });
 
 app.use(express.json());
 
@@ -159,9 +158,14 @@ wss.on('connection', (ws) => {
         }
     });
 
+
     ws.on('close', () => {
         if (currentLobby) {
             removePlayer(currentLobby, player.id);
         }
     });
+});
+
+server.listen(3000, () => {
+    console.log('Server running on port 3000');
 });
